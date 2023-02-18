@@ -42,7 +42,7 @@ class Backend:
         pass
 
     #menu navigation and actions
-    def pressed_index(self, index: int, play_songs: bool): #pressed an index in the current_list #enter, l. 
+    def pressed_index(self, index: int, play_songs: bool) -> bool: #pressed an index in the current_list #enter, l. 
         """
         Handles every action taking place on a specific menu item in the list current_folder_list.
         For example, when you press enter on a directory, we should change to that directory.
@@ -54,25 +54,32 @@ class Backend:
         set play_songs to true if you want this action to also play songs. Set it to false if you don't want this action to play songs.
 
         This function refreshes the lists.
+
+        Returns a true if we navigated to a new directory, false if it was a song. 
         """
 
         item = self.current_folder_list[index]
         if isinstance(item, str): #is directory
             self.navigator.cd(item)
             self._create_display_lists()
+            return True #return if this is a directory
         elif isinstance(item, song): #is song
             if (play_songs):
                 print("playing song " + item.song)
+            return False #return if this is a song so we don't want to refresh
 
         #handle enter folder, etc.
-    def previous_directory(self): #h
+    def previous_directory(self) -> bool: #h
         """
         Navigates to the previous directory and regenerates lists.
         
         This function refreshes the lists.
+
+        Returns true if changed the directory so we need to refresh. 
         """
         self.navigator.cd_parent() #change to previous dir
         self._create_display_lists()
+        return True
 
 
 
