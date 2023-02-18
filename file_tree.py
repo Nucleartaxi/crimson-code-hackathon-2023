@@ -4,12 +4,13 @@ from song import song
 
 # python mpv wrapper https://github.com/jaseg/python-mpv
 
+#list of audio file formats. 
 audio_file_formats = {
     ".aac", ".flac", ".m4a", ".mp3", ".ogg", ".oga", ".mogg", ".opus", ".wav", ".wma", ".webm", ".alac", ".aiff", ".wv"
 }
 
-class TreeNode:
-    def init_helper(self):
+class TreeNode: #class representing a node in a tree, containing children and songs.
+    def init_helper(self): #helps initialize this node and child nodes.
         for entry in listdir(self.path): #for every entry in this directory
             display_entry = entry
             entry = self.path + "/" + entry
@@ -25,16 +26,15 @@ class TreeNode:
                         url = f.readline().strip()
                         self.song_list.append(song(name=filename, song=url)) #file name, url 
 
-    def __init__(self, parent, path):
+    def __init__(self, parent, path): #constructor. 
         self.child_node_list = []
         self.song_list = []
         self.parent = parent
         self.path = path
         self.init_helper()
 
-class FileTree:
+class FileTree: #class representing a file tree.
     def __init__(self, path):
-        print(path)
         self.root = TreeNode(None, path) 
         self.root.parent = self.root
 
