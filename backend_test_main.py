@@ -5,7 +5,7 @@ while True:
     print("enter int to press index|H|")
     user_input = input(": ").strip()
     if user_input.isdigit():
-        b.pressed_index(int(user_input))
+        b.pressed_index(int(user_input), True)
     elif user_input == "H":
         b._previous_folder_list()
         b.previous_directory()
