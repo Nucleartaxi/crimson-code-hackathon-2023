@@ -11,5 +11,5 @@ while True:
         b.previous_directory()
     
     print("left pane: " + str(b.previous_folder_list))
-    print("center pane: " + str(b.current_folder_list))
+    print("center pane: " + str(b.current_folder_list_display))
     print("right pane: " + str(b.right_pane_list))

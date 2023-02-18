@@ -43,7 +43,7 @@ class Backend:
         pass
 
     #menu navigation and actions
-    def pressed_index(self, index: int): #pressed an index in the current_list #enter, l
+    def pressed_index(self, index: int): #pressed an index in the current_list #enter, l. 
         """
         Handles every action taking place on a specific menu item in the list current_folder_list.
         For example, when you press enter on a directory, we should change to that directory.
@@ -51,6 +51,8 @@ class Backend:
 
         Regenerates lists as needed based on the action. (changing directory will regenerate lists, 
         playing song will add a marker on the currently playing song)
+
+        This function refreshes the lists.
         """
 
         item = self.current_folder_list[index]
@@ -62,12 +64,17 @@ class Backend:
 
         #handle enter folder, etc.
     def previous_directory(self): #h
-        """Navigates to the previous directory and regenerates lists."""
+        """
+        Navigates to the previous directory and regenerates lists.
+        
+        This function refreshes the lists.
+        """
         self.navigator.cd_parent() #change to previous dir
         self._create_display_lists()
 
 
-    #playback
+
+    #playback 
     def play_pause(self): #space, p
         pass
     def shuffle(self): #s
