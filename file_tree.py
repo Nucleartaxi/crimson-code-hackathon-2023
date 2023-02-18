@@ -1,4 +1,4 @@
-from os import listdir, getcwd
+from os import listdir
 from os.path import isdir, isfile, splitext
 from song import song
 
@@ -8,15 +8,8 @@ audio_file_formats = {
     ".aac", ".flac", ".m4a", ".mp3", ".ogg", ".oga", ".mogg", ".opus", ".wav", ".wma", ".webm", ".alac", ".aiff", ".wv"
 }
 
-class FileTree:
-    def __init__(self, path):
-        print(path)
-        self.root = TreeNode(None, path) 
-        self.root.parent = self.root
-
 class TreeNode:
     def init_helper(self):
-        print("init helper")
         for entry in listdir(self.path): #for every entry in this directory
             display_entry = entry
             entry = self.path + "/" + entry
@@ -39,22 +32,10 @@ class TreeNode:
         self.path = path
         self.init_helper()
 
-# def list_files(filepath):
-#     child_nodes_of_root = []
-#     for root, dirs, files in walk(filepath):
-#         print(root)
-#         print(dirs)
-#         print(files)
-#         for file in files:
-#             if file.lower().endswith("A".lower()):
-#                 # paths.append(os.path.join(root, file))
-#                 pass
+class FileTree:
+    def __init__(self, path):
+        print(path)
+        self.root = TreeNode(None, path) 
+        self.root.parent = self.root
 
-#     #create root from path
-#     root = TreeNode(None, filepath)
-#     root.parent = root
-#     return root
 
-# list_files(".")
-tree = FileTree(getcwd() + "/Music")
-print("hi")
