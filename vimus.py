@@ -84,6 +84,51 @@ class MainPane(Static):
             ListItem(Label("hi")),
             ListItem(Label("hi")),
             ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("hi")),
+            ListItem(Label("lo")),
             id="cur", initial_index = 0
 
 
@@ -122,7 +167,7 @@ class vimusApp(App):
         self.set_focus(self.get_widget_by_id("cur"))
 
     def on_resize(self):
-        self.get_widget_by_id("main").styles.height = os.get_terminal_size()[1] - 3
+        self.get_widget_by_id("main").styles.height = os.get_terminal_size()[1] - 2
 
     def on_key(self, event: events.Key) -> None:
         """Called when the user presses a key."""
