@@ -20,10 +20,6 @@ class Backend:
 
 
 
-    #private methods to create the different lists 
-    def _generate_dir_list(self, dirs, songs):
-
-        pass
     def _previous_folder_list(self): #left pane, displays the previous folder
         parent_navigator = copy.copy(self.navigator)
         parent_navigator.cd_parent()
