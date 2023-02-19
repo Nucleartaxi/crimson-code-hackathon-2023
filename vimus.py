@@ -10,7 +10,7 @@ from textual import events
 
 
 
-
+term_height = 0
 
 class TimeDisplay(Static):
     """A widget to display elapsed time."""
@@ -58,6 +58,20 @@ class CurPane(ListView):
 
     #def compose(self) -> ComposeResult:
     #    """Create child widgets."""
+    def on_key(self, event: events.Key) -> None:
+        global term_height
+        """Called when the user presses a key."""
+        #replace with match later
+        key = event.key
+        if key == "g":
+            self.index = 0
+        elif key == "G":
+            self.index = len(self.children) - 1
+        elif key == "d":
+            self.index = min(int(self.index + term_height / 2), len(self.children) - 1)
+        elif key == "u":
+            self.index = max(int(self.index - term_height / 2), 0)
+
 
 class RightPane(Static):
     """Provides a view of the previous directory."""
@@ -80,7 +94,7 @@ class MainPane(Static):
         yield PrevPane(id="prev", initial_index = 0)
         yield CurPane(
             ListItem(Label("hi")),
-            ListItem(Label("hi")),
+            ListItem(Label("himmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")),
             ListItem(Label("hi")),
             ListItem(Label("hi")),
             ListItem(Label("hi")),
@@ -134,7 +148,7 @@ class MainPane(Static):
 
         )
 
-        yield RightPane(id="right")
+        yield RightPane("aa", id="right")
         #self.set_focus(self.get_widget_by_id("cur"))
 
 
@@ -167,11 +181,13 @@ class vimusApp(App):
         self.set_focus(self.get_widget_by_id("cur"))
 
     def on_resize(self):
-        self.get_widget_by_id("main").styles.height = os.get_terminal_size()[1] - 2
+        global term_height
+        term_height = os.get_terminal_size()[1] - 2
+        self.get_widget_by_id("main").styles.height = term_height
 
     def on_key(self, event: events.Key) -> None:
         """Called when the user presses a key."""
-        self.set_focus(self.get_widget_by_id("cur"))
+        self.set_focus(self.get_widget_by_id("cur")) #no matter what keybind is called, it should affect cur
         try:
             x = self.get_widget_by_id("right")
             key = event.key
