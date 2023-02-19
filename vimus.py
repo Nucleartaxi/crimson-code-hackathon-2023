@@ -154,7 +154,6 @@ class vimusApp(App):
         elif key == "H":
             self.BACKEND.previous_song()
         elif key == "m":
-            # self.BACKEND.play_pause()
             self.BACKEND.seek_forward_slight()
         elif key == "n":
             self.BACKEND.seek_backward_slight()
