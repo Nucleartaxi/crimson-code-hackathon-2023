@@ -81,7 +81,6 @@ class Backend:
             if (play_songs): #if this action should play songs
                 self.mpv.play(item.song)
                 self.current_song = item 
-                self.paused = False
             return False #return if this is a song so we don't want to refresh
         return False
 
@@ -101,13 +100,7 @@ class Backend:
 
     #playback 
     def play_pause(self): #space, p
-        if self.paused:
-            self.mpv.pause = False
-        else:
-            self.mpv.pause = True
-    def play(self, song: Song): #space, p
-
-        pass
+        self.mpv.cycle("pause")
     def shuffle(self): #s
         pass
     def next_song(self): #L
