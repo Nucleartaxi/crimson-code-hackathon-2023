@@ -17,9 +17,7 @@ class Backend:
         self.right_pane_list = [] 
 
         self.mpv: MPV = MPV(ytdl=True, video=False) #create an mpv instance with ytdl enabled and no video (so audio only)
-        self.current_song: song = ""
-        self.current_song_time: int = 0
-        self.playing: bool = False
+        self.paused: bool = False
 
         self._create_display_lists() #generate all the display lists on startup
 
@@ -73,8 +71,7 @@ class Backend:
             if (play_songs): #if this action should play songs
                 self.mpv.play(item.song)
                 self.current_song = item 
-                self.playing = True 
-                self.current_song_time = 0
+                self.paused = False
             return False #return if this is a song so we don't want to refresh
         return False
 
@@ -95,19 +92,10 @@ class Backend:
 
     #playback 
     def play_pause(self): #space, p
-        song = self.current_song
-        if self.playing:
-            self.mpv.stop(keep_playlist=True)
-            self.playing = False
-        else: #not playing
-            self.playing = True
-            if song == self.current_song:
-                self.mpv.play(self.current_song.song)
-                self._seek(0) #for unpausing
-            else: #song.song != self.current_song
-                self.current_song = song.song 
-                self.current_song_time = 0 #reset to beginning 
-                self.mpv.play(song.song)
+        if self.paused:
+            self.mpv.pause = False
+        else:
+            self.mpv.pause = True
     def play(self, song: song): #space, p
 
         pass
