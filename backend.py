@@ -2,6 +2,7 @@ from file_tree_navigator import FileTreeNavigator
 import file_tree_helpers
 import copy
 from song import song
+import mpv
 
 class Backend:
     def __init__(self):
