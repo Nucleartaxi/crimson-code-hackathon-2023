@@ -33,14 +33,14 @@ class Backend:
         if not result: #set empty if no higher directory
             parent_list = []
         else:
-            parent_list = parent_navigator.get_directories() + [x.display_name for x in parent_navigator.get_songs()]
+            parent_list = [x + "/" for x in parent_navigator.get_directories()] + [x.display_name for x in parent_navigator.get_songs()]
         self.previous_folder_list = parent_list
 
 
     def _current_folder_list(self):
         """Center pane, displays the current folder"""
         current_folder_list = self.navigator.get_directories() + self.navigator.get_songs()
-        self.current_folder_list_display = self.navigator.get_directories() + [x.display_name for x in self.navigator.get_songs()]
+        self.current_folder_list_display = [x + "/" for x in self.navigator.get_directories()] + [x.display_name for x in self.navigator.get_songs()]
         self.current_folder_list = current_folder_list
 
     def _right_pane_list(self):

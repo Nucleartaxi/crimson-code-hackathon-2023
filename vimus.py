@@ -134,7 +134,6 @@ class vimusApp(App):
         except:
             raise Exception("Widgets were not initialized correctly")
 
-        # right.update_text("testing")
         if key == "h": #previous dir
             result, index = self.BACKEND.previous_directory(cur.index)
             if result:

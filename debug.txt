@@ -1,8 +1,0 @@
-cur index, now moving to prev index, is 0
-cur index, now moving to prev index, is 0
-cur index, now moving to prev index, is 0
-cur index, now moving to prev index, is 0
-cur index, now moving to prev index, is 0
-cur index, now moving to prev index, is 0
-cur index, now moving to prev index, is 0
-cur index, now moving to prev index, is 0
