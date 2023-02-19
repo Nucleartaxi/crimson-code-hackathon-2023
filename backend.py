@@ -1,5 +1,4 @@
 from file_tree_navigator import FileTreeNavigator
-from file_tree import FileTree
 import file_tree_helpers
 import copy
 from song import song
