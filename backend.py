@@ -17,6 +17,8 @@ class Backend:
         self.right_pane_list: list[str] = [] 
 
         self.mpv: MPV = MPV(ytdl=True, video=False) #create an mpv instance with ytdl enabled and no video (so audio only)
+        self.current_song_list = self.navigator.get_songs()
+        self.current_song_index = 0
 
         self._create_display_lists() #generate all the display lists on startup
 
@@ -78,8 +80,9 @@ class Backend:
             return True #return if this is a directory
         elif isinstance(item, Song): #is song
             if (play_songs): #if this action should play songs
-                self.mpv.play(item.song)
-                self.current_song = item 
+                #we only need to update the current song list when a new song is selected.
+                self.current_song_list = self.navigator.get_songs() #update the list of songs in the current directory that we are now playing.
+                self.play_song(item) #item is the song to play
             return False #return if this is a song so we don't want to refresh
         return False
 
@@ -98,14 +101,25 @@ class Backend:
 
 
     #playback 
+    def play_song(self, song: Song):
+        """
+        Plays the given song.
+        """
+        self.mpv.play(song.song)
+        self.current_song_index = self.current_song_list.index(song) #index of the song we're currently playing
+
     def play_pause(self): #space, p
         self.mpv.cycle("pause")
     def shuffle(self): #s
         pass
     def next_song(self): #L
-        pass
+        new_index = self.current_song_index + 1
+        if new_index < len(self.current_song_list) and new_index >= 0:
+            self.play_song(self.current_song_list[new_index])
     def previous_song(self): #H
-        pass
+        new_index = self.current_song_index - 1
+        if new_index >= 0 and new_index < len(self.current_song_list):
+            self.play_song(self.current_song_list[new_index])
     def seek_forward_slight(self): #.
         pass
     def seek_backward_slight(self): #,

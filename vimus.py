@@ -149,6 +149,10 @@ class vimusApp(App):
         elif key == "p":
             self.BACKEND.play_pause()
             # self.refresh_panes()
+        elif key == "L":
+            self.BACKEND.next_song()
+        elif key == "H":
+            self.BACKEND.previous_song()
 
     def refresh_panes(self):
         """Refresh all panes in the main pane"""
