@@ -1,7 +1,8 @@
 import file_tree_helpers
 import copy
-from song import song
+from song import Song
 from mpv import MPV
+from file_tree_navigator import FileTreeNavigator
 
 class Backend:
     def __init__(self):
@@ -76,7 +77,7 @@ class Backend:
             self.navigator.cd(item)
             self._create_display_lists()
             return True #return if this is a directory
-        elif isinstance(item, song): #is song
+        elif isinstance(item, Song): #is song
             if (play_songs): #if this action should play songs
                 self.mpv.play(item.song)
                 self.current_song = item 
@@ -104,7 +105,7 @@ class Backend:
             self.mpv.pause = False
         else:
             self.mpv.pause = True
-    def play(self, song: song): #space, p
+    def play(self, song: Song): #space, p
 
         pass
     def shuffle(self): #s
