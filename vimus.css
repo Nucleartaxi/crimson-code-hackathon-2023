@@ -1,0 +1,47 @@
+MainPane {
+    /*layout: horizontal;*/
+    background: $boost;
+    /*min-width: 50;*/
+    /*padding: 1;*/
+}
+
+Footer {
+    height: 1;
+}
+
+
+
+
+Text {
+    content-align: center middle;
+    text-opacity: 60%;
+}
+
+PrevPane {
+    content-align: center middle;
+    text-opacity: 60%;
+    width: 25%;
+}
+
+CurPane {
+    content-align: center middle;
+    text-opacity: 60%;
+}
+
+RightPane {
+    content-align: center middle;
+    text-opacity: 60%;
+    width: 25%;
+}
+
+#prev {
+    dock: left;
+}
+
+
+#right {
+    dock: right;
+}
+
+
+
