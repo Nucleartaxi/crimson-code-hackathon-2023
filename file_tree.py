@@ -13,7 +13,7 @@ audio_file_formats = {
 class TreeNode:
     """class representing a node in a tree, containing children and songs."""
     def __init__(self, parent, path: str): #constructor. 
-        self.child_node_list = []
+        self.child_node_list: list[TreeNode] = []
         self.song_list: list[Song] = []
         self.parent: TreeNode | None = parent
         self.path = path
