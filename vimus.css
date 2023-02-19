@@ -5,6 +5,16 @@ MainPane {
     /*padding: 1;*/
 }
 
+BottomPane {
+    max-height: 1;
+    background: $boost;
+}
+
+TopPane {
+    max-height: 1;
+    background: $boost;
+}
+
 Footer {
     height: 1;
 }
@@ -14,24 +24,60 @@ Footer {
 
 Text {
     content-align: center middle;
-    text-opacity: 60%;
+    text-opacity: 100%;
 }
 
 PrevPane {
     content-align: center middle;
-    text-opacity: 60%;
+    text-opacity: 100%;
     width: 25%;
 }
 
 CurPane {
     content-align: center middle;
-    text-opacity: 60%;
+    text-opacity: 100%;
 }
 
 RightPane {
     content-align: center middle;
-    text-opacity: 60%;
+    text-opacity: 100%;
     width: 25%;
+}
+
+
+
+
+
+BottomSpacerLeft {
+    content-align: center middle;
+    text-opacity: 100%;
+    width: 25%;
+    dock: left;
+}
+BottomSpacerRight {
+    content-align: center middle;
+    text-opacity: 100%;
+    width: 25%;
+    dock: right;
+}
+
+ElapsedPane {
+    content-align: center middle;
+    text-opacity: 100%;
+    dock: left;
+    width: 10%;
+}
+
+ProgressPane {
+    content-align: center middle;
+    text-opacity: 40%;
+}
+
+TotalPane {
+    content-align: center middle;
+    text-opacity: 100%;
+    dock: right;
+    width: 10%;
 }
 
 #prev {

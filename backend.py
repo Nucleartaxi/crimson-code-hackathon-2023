@@ -1,14 +1,14 @@
-import file_tree_helpers
 import copy
-from song import Song
 from mpv import MPV
 from file_tree_navigator import FileTreeNavigator
+from file_tree import Song, create_tree_from_music_directory
 from random import randint
+from debug import debug
 
 class Backend:
     def __init__(self):
         """Utils for navigating the file tree"""
-        self.file_tree = file_tree_helpers.create_tree_from_music_directory()
+        self.file_tree = create_tree_from_music_directory()
         self.navigator = FileTreeNavigator(self.file_tree)
 
         #lists used for display
@@ -25,26 +25,49 @@ class Backend:
         self.playback_song_history = []
 
         self._create_display_lists() #generate all the display lists on startup
+        self.elapsed_time: float | None = None
+
+        @self.mpv.property_observer('time-pos')
+        def get_elapsed_time(_name, value: float):
+            if isinstance(value, float):
+                self.elapsed_time = value
+            else:
+                self.elapsed_time = None
 
     def _previous_folder_list(self):
         """Left pane, displays the previous folder"""
-        parent_navigator = copy.copy(self.navigator)
-        parent_navigator.cd_parent()
-
-        parent_list = parent_navigator.get_directories() + [x.display_name for x in parent_navigator.get_songs()]
+        parent_navigator = copy.copy(self.navigator) #create a temporary navigator
+        result = parent_navigator.cd_parent()
+        if not result: #set empty if no higher directory
+            parent_list = []
+        else:
+            parent_list = [x + "/" for x in parent_navigator.get_directories()] + [x.display_name for x in parent_navigator.get_songs()]
         self.previous_folder_list = parent_list
 
 
     def _current_folder_list(self):
         """Center pane, displays the current folder"""
         current_folder_list = self.navigator.get_directories() + self.navigator.get_songs()
-        self.current_folder_list_display = self.navigator.get_directories() + [x.display_name for x in self.navigator.get_songs()]
+        self.current_folder_list_display = [x + "/" for x in self.navigator.get_directories()] + [x.display_name for x in self.navigator.get_songs()]
         self.current_folder_list = current_folder_list
 
     def _right_pane_list(self):
         """Right pane, used for displaying other information such as song info and help"""
         # right_pane_list = ["hello", "there", "general", "kenobi"]
-        right_pane_list = ["h: left", "l: right", "j: down", "k: up", "ENTER: play song", "p: play/pause", "L: next song", "H: prev song", "m/M: seek forward", "n/N: seek backward", "s: shuffle mode", "r: repeat mode"]
+        right_pane_list = [
+            "h: left",
+            "j: down",
+            "k: up", 
+            "l: right",
+            "ENTER: play song",
+            "p: play/pause",
+            "H: prev song",
+            "L: next song",
+            "n/m: seek back/forward",
+            "N/M: seek back/forward big",
+            "s: shuffle mode",
+            "r: repeat mode"
+        ]
         self.right_pane_list = right_pane_list
 
 
@@ -54,7 +77,7 @@ class Backend:
         self._current_folder_list()
         self._right_pane_list()
 
-    def pressed_index(self, index: int, play_songs: bool) -> bool: #pressed an index in the current_list #enter, l. 
+    def pressed_index(self, index: int, play_songs: bool) -> tuple[bool, int]: #pressed an index in the current_list #enter, l. 
         """
         Handles every action taking place on a specific menu item in the list current_folder_list.
         For example, when you press enter on a directory, we should change to that directory.
@@ -71,21 +94,25 @@ class Backend:
         """
 
         item = self.current_folder_list[index]
+        #self.navigator.set_focus(index, )
         if isinstance(item, str): #is directory
-            self.navigator.cd(item)
-            self._create_display_lists()
-            return True #return if this is a directory
+            self.navigator.set_focus(index) #record the current focus
+            result = self.navigator.cd(item)
+            if result:
+                self._create_display_lists()
+            return (result, self.navigator.get_focus()) #return if this is a directory
         elif isinstance(item, Song): #is song
-            if (play_songs): #if this action should play songs
+            if play_songs: #if this action should play songs
                 #we only need to update the current song list when a new song is selected.
                 self.current_song_list = self.navigator.get_songs() #update the list of songs in the current directory that we are now playing.
                 self.playback_mode = "normal" #reset back to normal play mode for this play
                 self.playback_song_history = [] #reset history for this new song play
                 self.play_song(item) #item is the song to play
-            return False #return if this is a song so we don't want to refresh
-        return False
+            return (False, -1) #return if this is a song so we don't want to refresh
+        #impossible else case
+        return (False, -1)
 
-    def previous_directory(self) -> bool: #h
+    def previous_directory(self, index: int) -> tuple[bool, int]: #h
         """
         Navigates to the previous directory and regenerates lists.
         
@@ -93,19 +120,27 @@ class Backend:
 
         Returns true if changed the directory so we need to refresh. 
         """
-        self.navigator.cd_parent() #change to previous dir
-        self._create_display_lists()
-        return True
+        self.navigator.set_focus(index) #record the current focus
+        result = self.navigator.cd_parent() #change to previous dir
+        if result: #if we were able to move to the previous directory
+            self._create_display_lists() #then update the directories
+        return (result, self.navigator.get_focus())
+
+    def current_path(self) -> str:
+        return self.navigator.get_current_directory()
+
 
     #playback 
     def _seek(self, seconds: int): #,.<>
         """Seek forward or back a certain amount of seconds"""
         self.mpv.seek(seconds, reference="relative", precision="exact")
+        self.mpv.properties
 
     def play_song(self, song: Song):
         """
         Plays the given song.
         """
+        self.current_song = song.display_name
         self.mpv.play(song.song)
         self.current_song_index = self.current_song_list.index(song) #index of the song we're currently playing
         # self.mpv.wait_for_playback()
@@ -159,5 +194,6 @@ class Backend:
 
     def seek_backward_alot(self): #N
         self._seek(-60)
+
 
 
