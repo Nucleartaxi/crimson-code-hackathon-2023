@@ -43,7 +43,8 @@ class Backend:
 
     def _right_pane_list(self):
         """Right pane, used for displaying other information such as song info and help"""
-        right_pane_list = ["hello", "there", "general", "kenobi"]
+        # right_pane_list = ["hello", "there", "general", "kenobi"]
+        right_pane_list = ["h: left", "l: right", "j: down", "k: up", "ENTER: play song", "p: play/pause", "L: next song", "H: prev song", "m/M: seek forward", "n/N: seek backward", "s: shuffle mode", "r: repeat mode"]
         self.right_pane_list = right_pane_list
 
 

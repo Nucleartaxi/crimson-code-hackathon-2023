@@ -136,7 +136,7 @@ class vimusApp(App):
         except:
             raise Exception("Widgets were not initialized correctly")
 
-        right.update_text("testing")
+        # right.update_text("testing")
         if key == "h":
             if self.BACKEND.previous_directory():
                 self.refresh_panes() #refresh
