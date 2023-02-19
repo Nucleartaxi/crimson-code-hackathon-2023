@@ -97,7 +97,7 @@ class Backend:
     def play_pause(self): #space, p
         song = self.current_song
         if self.playing:
-            self.mpv.stop()
+            self.mpv.stop(keep_playlist=True)
             self.playing = False
         else: #not playing
             self.playing = True

@@ -166,7 +166,7 @@ class vimusApp(App):
                 self.refresh_panes()
         elif key == "p":
             self.BACKEND.play_pause()
-            self.refresh_panes()
+            # self.refresh_panes()
 
     def refresh_panes(self):
      #   for elem in self.DISPLAY_LIST:
