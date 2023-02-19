@@ -93,7 +93,7 @@ class Backend:
     #playback 
     def _seek(self, seconds: int): #,.<>
         """Seek forward or back a certain amount of seconds"""
-        pass
+        self.mpv.seek(seconds, reference="relative", precision="exact")
 
     def play_song(self, song: Song):
         """
@@ -118,16 +118,16 @@ class Backend:
         if new_index >= 0 and new_index < len(self.current_song_list):
             self.play_song(self.current_song_list[new_index])
 
-    def seek_forward_slight(self): #.
-        pass
+    def seek_forward_slight(self): #m
+        self._seek(3)
 
-    def seek_backward_slight(self): #,
-        pass
+    def seek_backward_slight(self): #n
+        self._seek(-3)
 
-    def seek_forward_alot(self): #>
-        pass
+    def seek_forward_alot(self): #M
+        self._seek(60)
 
-    def seek_backward_alot(self): #<
-        pass
-    
+    def seek_backward_alot(self): #N
+        self._seek(-60)
+
 

@@ -153,6 +153,15 @@ class vimusApp(App):
             self.BACKEND.next_song()
         elif key == "H":
             self.BACKEND.previous_song()
+        elif key == "m":
+            # self.BACKEND.play_pause()
+            self.BACKEND.seek_forward_slight()
+        elif key == "n":
+            self.BACKEND.seek_backward_slight()
+        elif key == "M":
+            self.BACKEND.seek_forward_alot()
+        elif key == "N":
+            self.BACKEND.seek_backward_alot()
 
     def refresh_panes(self):
         """Refresh all panes in the main pane"""
