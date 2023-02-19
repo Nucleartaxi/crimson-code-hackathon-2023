@@ -49,8 +49,10 @@ class CurPane(ListView):
 
     BINDINGS = [
         ("j", "cursor_down", "Move down"),
-        ("k", "cursor_up", "Move down"),
+        ("k", "cursor_up", "Move up"),
     ]
+
+    SEARCHING: bool = False
 
     #Binding("enter", "select_cursor", "Select", show=False),
     #Binding("up", "cursor_up", "Cursor Up", show=False),
@@ -58,11 +60,39 @@ class CurPane(ListView):
 
     #def compose(self) -> ComposeResult:
     #    """Create child widgets."""
+
+    #def __init__(self,
+    #    *children: ListItem,
+    #    initial_index: int | None = 0,
+    #    name: str | None = None,
+    #    id: str | None = None,
+    #    classes: str | None = None,
+    #):
+    #    super(CurPane, self).__init__(
+    #            *children,
+    #            initial_index=initial_index,
+    #            name=name,
+    #            id=id,
+    #            classes=classes
+    #    )
+
+
+
     def on_key(self, event: events.Key) -> None:
         global term_height
         """Called when the user presses a key."""
-        #replace with match later
+
         key = event.key
+        if self.SEARCHING:
+            for i in range(self.index, len(self.DISPLAY_LIST)):
+                name = self.DISPLAY_LIST[i]
+                if name != None and len(name) > 0 and name[0] == key:
+                    self.index = i
+                    break
+            self.SEARCHING = False
+            return
+
+        #replace with match later
         if key == "g":
             self.index = 0
         elif key == "G":
@@ -71,6 +101,13 @@ class CurPane(ListView):
             self.index = min(int(self.index + term_height / 2), len(self.children) - 1)
         elif key == "u":
             self.index = max(int(self.index - term_height / 2), 0)
+        elif key == "f":
+            self.SEARCHING = True
+
+    def refresh_list(self):
+        self.clear()
+        for elem in self.DISPLAY_LIST:
+            self.append(ListItem(Label(elem)))
 
 
 class RightPane(Static):
@@ -92,62 +129,7 @@ class MainPane(Static):
         """Create child widgets."""
         #yield PrevPane(ListItem(name="hi"), ListItem(name="hello"), id="prev", initial_index=0)
         yield PrevPane(id="prev", initial_index = 0)
-        yield CurPane(
-            ListItem(Label("hi")),
-            ListItem(Label("himmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("hi")),
-            ListItem(Label("lo")),
-            id="cur", initial_index = 0
-
-
-        )
-
+        yield CurPane(ListItem(Label('a')), id="cur", initial_index = 0)
         yield RightPane("aa", id="right")
         #self.set_focus(self.get_widget_by_id("cur"))
 
@@ -178,7 +160,63 @@ class vimusApp(App):
 
     def on_mount(self):
         """Gets called when widget is finalized."""
-        self.set_focus(self.get_widget_by_id("cur"))
+        cur = self.get_widget_by_id("cur")
+        self.set_focus(cur)
+        cur.DISPLAY_LIST = [
+            "hi",
+            "himmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "hi",
+            "lo",
+        ]
+
+
+
 
     def on_resize(self):
         global term_height
@@ -187,16 +225,20 @@ class vimusApp(App):
 
     def on_key(self, event: events.Key) -> None:
         """Called when the user presses a key."""
-        self.set_focus(self.get_widget_by_id("cur")) #no matter what keybind is called, it should affect cur
+        key = event.key
         try:
-            x = self.get_widget_by_id("right")
-            key = event.key
-            print(key)
-            print("sup")
-            x.update_text("testing")
+            self.set_focus(self.get_widget_by_id("cur")) #no matter what keybind is called, it should affect cur
+
+            right = self.get_widget_by_id("right")
+            right.update_text("testing")
         except Exception as e:
             with open("output.txt", "w") as file:
                 file.write(str(e))
+        if key == "h":
+            cur = self.get_widget_by_id("cur")
+            cur.refresh_list() #refresh
+        elif key == "l":
+            pass
 
 
 if __name__ == "__main__":
