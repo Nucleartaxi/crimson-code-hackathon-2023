@@ -234,11 +234,13 @@ class vimusApp(App):
         except Exception as e:
             with open("output.txt", "w") as file:
                 file.write(str(e))
+        cur = self.get_widget_by_id("cur")
         if key == "h":
-            cur = self.get_widget_by_id("cur")
             cur.refresh_list() #refresh
         elif key == "l":
-            pass
+            cur.refresh_list()
+        elif key == "enter":
+            cur.refresh_list()
 
 
 if __name__ == "__main__":
