@@ -34,6 +34,9 @@ class TreeNode:
                     with open(entry, "r") as f:
                         url = f.readline().strip()
                         self.song_list.append(Song(name=filename, song=url)) #file name, url 
+            #sort the lists for organized output
+            self.child_node_list = sorted(self.child_node_list, key=(lambda x: x.path))
+            self.song_list = sorted(self.song_list, key=(lambda x: x.display_name))
 
 
 
