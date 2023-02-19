@@ -17,7 +17,6 @@ class Backend:
         self.right_pane_list: list[str] = [] 
 
         self.mpv: MPV = MPV(ytdl=True, video=False) #create an mpv instance with ytdl enabled and no video (so audio only)
-        self.paused: bool = False
 
         self._create_display_lists() #generate all the display lists on startup
 
