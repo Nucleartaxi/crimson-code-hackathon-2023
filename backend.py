@@ -2,7 +2,7 @@ from file_tree_navigator import FileTreeNavigator
 import file_tree_helpers
 import copy
 from song import song
-import mpv
+from mpv import MPV
 
 class Backend:
     def __init__(self):
@@ -15,6 +15,11 @@ class Backend:
         self.current_folder_list_display = []
         self.current_folder_list = []
         self.right_pane_list = [] 
+
+        self.mpv: MPV = MPV(ytdl=True, video=False) #create an mpv instance with ytdl enabled and no video (so audio only)
+        self.current_song: song = ""
+        self.current_song_time: int = 0
+        self.playing: bool = False
 
         self._create_display_lists() #generate all the display lists on startup
 
@@ -65,8 +70,11 @@ class Backend:
             self._create_display_lists()
             return True #return if this is a directory
         elif isinstance(item, song): #is song
-            if (play_songs):
-                print("playing song " + item.song)
+            if (play_songs): #if this action should play songs
+                self.mpv.play(item.song)
+                self.current_song = item 
+                self.playing = True 
+                self.current_song_time = 0
             return False #return if this is a song so we don't want to refresh
         return False
 
@@ -87,6 +95,21 @@ class Backend:
 
     #playback 
     def play_pause(self): #space, p
+        song = self.current_song
+        if self.playing:
+            self.mpv.stop()
+            self.playing = False
+        else: #not playing
+            self.playing = True
+            if song == self.current_song:
+                self.mpv.play(self.current_song.song)
+                self._seek(0) #for unpausing
+            else: #song.song != self.current_song
+                self.current_song = song.song 
+                self.current_song_time = 0 #reset to beginning 
+                self.mpv.play(song.song)
+    def play(self, song: song): #space, p
+
         pass
     def shuffle(self): #s
         pass

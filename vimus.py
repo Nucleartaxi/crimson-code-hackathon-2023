@@ -164,6 +164,9 @@ class vimusApp(App):
         elif key == "enter":
             if self.BACKEND.pressed_index(self.get_widget_by_id("cur").index, True):
                 self.refresh_panes()
+        elif key == "p":
+            self.BACKEND.play_pause()
+            self.refresh_panes()
 
     def refresh_panes(self):
      #   for elem in self.DISPLAY_LIST:
