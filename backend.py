@@ -25,6 +25,14 @@ class Backend:
         self.playback_song_history = []
 
         self._create_display_lists() #generate all the display lists on startup
+        self.elapsed_time: float | None = None
+
+        @self.mpv.property_observer('time-pos')
+        def get_elapsed_time(_name, value: float):
+            if isinstance(value, float):
+                self.elapsed_time = value
+            else:
+                self.elapsed_time = None
 
     def _previous_folder_list(self):
         """Left pane, displays the previous folder"""
@@ -118,15 +126,21 @@ class Backend:
             self._create_display_lists() #then update the directories
         return (result, self.navigator.get_focus())
 
+    def current_path(self) -> str:
+        return self.navigator.get_current_directory()
+
+
     #playback 
     def _seek(self, seconds: int): #,.<>
         """Seek forward or back a certain amount of seconds"""
         self.mpv.seek(seconds, reference="relative", precision="exact")
+        self.mpv.properties
 
     def play_song(self, song: Song):
         """
         Plays the given song.
         """
+        self.current_song = song.display_name
         self.mpv.play(song.song)
         self.current_song_index = self.current_song_list.index(song) #index of the song we're currently playing
         # self.mpv.wait_for_playback()
@@ -180,5 +194,6 @@ class Backend:
 
     def seek_backward_alot(self): #N
         self._seek(-60)
+
 
 
