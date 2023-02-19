@@ -28,8 +28,8 @@ class TreeNode: #class representing a node in a tree, containing children and so
 
     def __init__(self, parent, path): #constructor. 
         self.child_node_list = []
-        self.song_list = []
-        self.parent = parent
+        self.song_list: list[song] = []
+        self.parent: TreeNode = parent
         self.path = path
         self.init_helper()
 
