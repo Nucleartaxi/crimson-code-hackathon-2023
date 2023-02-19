@@ -22,7 +22,6 @@ class Backend:
 
         self._create_display_lists() #generate all the display lists on startup
 
-
     def _previous_folder_list(self):
         """Left pane, displays the previous folder"""
         parent_navigator = copy.copy(self.navigator)
@@ -38,7 +37,6 @@ class Backend:
         self.current_folder_list_display = self.navigator.get_directories() + [x.display_name for x in self.navigator.get_songs()]
         self.current_folder_list = current_folder_list
 
-
     def _right_pane_list(self):
         """Right pane, used for displaying other information such as song info and help"""
         right_pane_list = ["hello", "there", "general", "kenobi"]
@@ -50,12 +48,6 @@ class Backend:
         self._previous_folder_list()
         self._current_folder_list()
         self._right_pane_list()
-
-
-    def _seek(self, seconds: int): #,.<>
-        """Seek forward or back a certain amount of seconds"""
-        pass
-
 
     def pressed_index(self, index: int, play_songs: bool) -> bool: #pressed an index in the current_list #enter, l. 
         """
@@ -86,7 +78,6 @@ class Backend:
             return False #return if this is a song so we don't want to refresh
         return False
 
-
     def previous_directory(self) -> bool: #h
         """
         Navigates to the previous directory and regenerates lists.
@@ -99,8 +90,11 @@ class Backend:
         self._create_display_lists()
         return True
 
-
     #playback 
+    def _seek(self, seconds: int): #,.<>
+        """Seek forward or back a certain amount of seconds"""
+        pass
+
     def play_song(self, song: Song):
         """
         Plays the given song.
@@ -110,22 +104,30 @@ class Backend:
 
     def play_pause(self): #space, p
         self.mpv.cycle("pause")
+
     def shuffle(self): #s
         pass
+
     def next_song(self): #L
         new_index = self.current_song_index + 1
         if new_index < len(self.current_song_list) and new_index >= 0:
             self.play_song(self.current_song_list[new_index])
+
     def previous_song(self): #H
         new_index = self.current_song_index - 1
         if new_index >= 0 and new_index < len(self.current_song_list):
             self.play_song(self.current_song_list[new_index])
+
     def seek_forward_slight(self): #.
         pass
+
     def seek_backward_slight(self): #,
         pass
+
     def seek_forward_alot(self): #>
         pass
+
     def seek_backward_alot(self): #<
         pass
+    
 
