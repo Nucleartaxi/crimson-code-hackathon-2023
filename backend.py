@@ -43,7 +43,20 @@ class Backend:
     def _right_pane_list(self):
         """Right pane, used for displaying other information such as song info and help"""
         # right_pane_list = ["hello", "there", "general", "kenobi"]
-        right_pane_list = ["h: left", "l: right", "j: down", "k: up", "ENTER: play song", "p: play/pause", "L: next song", "H: prev song", "m/M: seek forward", "n/N: seek backward", "s: shuffle mode", "r: repeat mode"]
+        right_pane_list = [
+            "h: left",
+            "j: down",
+            "k: up", 
+            "l: right",
+            "ENTER: play song",
+            "p: play/pause",
+            "H: prev song",
+            "L: next song",
+            "n/m: seek back/forward",
+            "N/M: seek back/forward big",
+            "s: shuffle mode",
+            "r: repeat mode"
+        ]
         self.right_pane_list = right_pane_list
 
 
@@ -71,17 +84,19 @@ class Backend:
 
         item = self.current_folder_list[index]
         if isinstance(item, str): #is directory
-            self.navigator.cd(item)
-            self._create_display_lists()
-            return True #return if this is a directory
+            result = self.navigator.cd(item)
+            if result:
+                self._create_display_lists()
+            return result #return if this is a directory
         elif isinstance(item, Song): #is song
-            if (play_songs): #if this action should play songs
+            if play_songs: #if this action should play songs
                 #we only need to update the current song list when a new song is selected.
                 self.current_song_list = self.navigator.get_songs() #update the list of songs in the current directory that we are now playing.
                 self.playback_mode = "normal" #reset back to normal play mode for this play
                 self.playback_song_history = [] #reset history for this new song play
                 self.play_song(item) #item is the song to play
             return False #return if this is a song so we don't want to refresh
+        #impossible else case
         return False
 
     def previous_directory(self) -> bool: #h
@@ -92,9 +107,10 @@ class Backend:
 
         Returns true if changed the directory so we need to refresh. 
         """
-        self.navigator.cd_parent() #change to previous dir
-        self._create_display_lists()
-        return True
+        result = self.navigator.cd_parent() #change to previous dir
+        if result:
+            self._create_display_lists()
+        return result
 
     #playback 
     def _seek(self, seconds: int): #,.<>

@@ -14,23 +14,23 @@ Footer {
 
 Text {
     content-align: center middle;
-    text-opacity: 60%;
+    text-opacity: 100%;
 }
 
 PrevPane {
     content-align: center middle;
-    text-opacity: 60%;
+    text-opacity: 100%;
     width: 25%;
 }
 
 CurPane {
     content-align: center middle;
-    text-opacity: 60%;
+    text-opacity: 100%;
 }
 
 RightPane {
     content-align: center middle;
-    text-opacity: 60%;
+    text-opacity: 100%;
     width: 25%;
 }
 

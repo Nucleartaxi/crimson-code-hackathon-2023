@@ -11,19 +11,23 @@ class FileTreeNavigator:
         """Returns the current directory path"""
         return self.current.path
 
-    def cd_parent(self):
+    def cd_parent(self) -> bool:
         """Focuses the parent node"""
         match self.current.parent:
             case None:
-                return
+                return False
             case TreeNode:
                 self.current = self.current.parent
+        return True
 
-    def cd(self, path: str):
+    def cd(self, path: str) -> bool:
         """Focuses a subdirectory inside the present working directory"""
+        lookup_path = self.current.path + "/" + path;
         for node in self.current.child_node_list:
-            if node.path == self.current.path + "/" + path: #if the path is the same, change directory
+            if node.path == lookup_path: #if the path is the same, change directory
                 self.current = node
+                return True
+        return False
 
     def get_songs(self):
         """Returns the list of songs in this directory"""
