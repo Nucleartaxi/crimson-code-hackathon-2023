@@ -78,7 +78,7 @@ class Backend:
             if (play_songs): #if this action should play songs
                 #we only need to update the current song list when a new song is selected.
                 self.current_song_list = self.navigator.get_songs() #update the list of songs in the current directory that we are now playing.
-                self.playback_mode = "normal" #reset back to normal play mode
+                self.playback_mode = "normal" #reset back to normal play mode for this play
                 self.playback_song_history = [] #reset history for this new song play
                 self.play_song(item) #item is the song to play
             return False #return if this is a song so we don't want to refresh
@@ -135,9 +135,17 @@ class Backend:
 
 
     def previous_song(self): #H
-        new_index = self.current_song_index - 1
-        if new_index >= 0 and new_index < len(self.current_song_list):
-            self.play_song(self.current_song_list[new_index])
+        if self.playback_mode == "normal":
+            new_index = self.current_song_index - 1
+            if new_index >= 0 and new_index < len(self.current_song_list):
+                self.play_song(self.current_song_list[new_index])
+        elif self.playback_mode == "shuffle":
+            if len(self.playback_song_history) > 0:
+                self.play_song(self.playback_song_history.pop()) #plays the song off the top of the history
+            #else no songs to go back to, do nothing
+        elif self.playback_mode == "repeat": #just play current song
+            self.play_song(self.current_song_list[self.current_song_index])  
+
 
     def seek_forward_slight(self): #m
         self._seek(3)
