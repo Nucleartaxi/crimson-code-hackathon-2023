@@ -101,6 +101,7 @@ class Backend:
         """
         self.mpv.play(song.song)
         self.current_song_index = self.current_song_list.index(song) #index of the song we're currently playing
+        # self.mpv.wait_for_playback()
 
     def play_pause(self): #space, p
         self.mpv.cycle("pause")
