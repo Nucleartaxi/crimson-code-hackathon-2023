@@ -69,7 +69,7 @@ class Backend:
         self._current_folder_list()
         self._right_pane_list()
 
-    def pressed_index(self, index: int, play_songs: bool) -> bool: #pressed an index in the current_list #enter, l. 
+    def pressed_index(self, index: int, play_songs: bool) -> tuple[bool, int]: #pressed an index in the current_list #enter, l. 
         """
         Handles every action taking place on a specific menu item in the list current_folder_list.
         For example, when you press enter on a directory, we should change to that directory.
@@ -86,11 +86,13 @@ class Backend:
         """
 
         item = self.current_folder_list[index]
+        #self.navigator.set_focus(index, )
         if isinstance(item, str): #is directory
+            self.navigator.set_focus(index) #record the current focus
             result = self.navigator.cd(item)
             if result:
                 self._create_display_lists()
-            return result #return if this is a directory
+            return (result, self.navigator.get_focus()) #return if this is a directory
         elif isinstance(item, Song): #is song
             if play_songs: #if this action should play songs
                 #we only need to update the current song list when a new song is selected.
@@ -98,11 +100,11 @@ class Backend:
                 self.playback_mode = "normal" #reset back to normal play mode for this play
                 self.playback_song_history = [] #reset history for this new song play
                 self.play_song(item) #item is the song to play
-            return False #return if this is a song so we don't want to refresh
+            return (False, -1) #return if this is a song so we don't want to refresh
         #impossible else case
-        return False
+        return (False, -1)
 
-    def previous_directory(self) -> bool: #h
+    def previous_directory(self, index: int) -> tuple[bool, int]: #h
         """
         Navigates to the previous directory and regenerates lists.
         
@@ -110,10 +112,11 @@ class Backend:
 
         Returns true if changed the directory so we need to refresh. 
         """
+        self.navigator.set_focus(index) #record the current focus
         result = self.navigator.cd_parent() #change to previous dir
         if result: #if we were able to move to the previous directory
             self._create_display_lists() #then update the directories
-        return result
+        return (result, self.navigator.get_focus())
 
     #playback 
     def _seek(self, seconds: int): #,.<>

@@ -126,24 +126,37 @@ class vimusApp(App):
 
         #fix type hinting
         try:
+            prev = self.get_widget_by_id("prev")
             cur = self.get_widget_by_id("cur")
             right = self.get_widget_by_id("right")
-            if not isinstance(cur, CurPane) or not isinstance(right, RightPane):
+            if not isinstance(cur, CurPane) or not isinstance(right, RightPane) or not isinstance(prev, PrevPane):
                 raise Exception("Widgets were not initialized correctly")
         except:
             raise Exception("Widgets were not initialized correctly")
 
         # right.update_text("testing")
-        if key == "h":
-            debug("pressed h")
-            if self.BACKEND.previous_directory():
+        if key == "h": #previous dir
+            result, index = self.BACKEND.previous_directory(cur.index)
+            if result:
                 self.refresh_panes() #refresh
-        elif key == "l":
-            if self.BACKEND.pressed_index(cur.index, False):
+            if index > -1: #update index
+                cur.index = index
+        elif key == "l": #next dir
+            result, index = self.BACKEND.pressed_index(cur.index, False)
+            if result: #if updating panes
+                prev_index = cur.index
                 self.refresh_panes()
-        elif key == "enter":
-            if self.BACKEND.pressed_index(cur.index, True):
+                prev.index = prev_index
+            if index > -1: #update index
+                cur.index = index
+        elif key == "enter": #next dir or play
+            result, index = self.BACKEND.pressed_index(cur.index, True)
+            if result: #if updating panes
+                prev_index = cur.index
                 self.refresh_panes()
+                prev.index = prev_index
+            if index > -1: #update index
+                cur.index = index
         elif key == "p":
             self.BACKEND.play_pause()
         elif key == "L":
