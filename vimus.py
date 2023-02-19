@@ -4,6 +4,7 @@ from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Label, ListItem, ListView, Static, Button
 from textual.containers import Container
 from backend import Backend
+from debug import debug, debug_clear
 
 
 term_height: int = 0 #the height of the terminal
@@ -74,10 +75,6 @@ class RightPane(Static):
         self.update(text)
 
 
-class HelpPane(Static):
-    """Provides a view of the previous directory."""
-
-
 class MainPane(Static):
     """Contains all elements in the main pane."""
 
@@ -138,6 +135,7 @@ class vimusApp(App):
 
         # right.update_text("testing")
         if key == "h":
+            debug("pressed h")
             if self.BACKEND.previous_directory():
                 self.refresh_panes() #refresh
         elif key == "l":
@@ -148,7 +146,6 @@ class vimusApp(App):
                 self.refresh_panes()
         elif key == "p":
             self.BACKEND.play_pause()
-            # self.refresh_panes()
         elif key == "L":
             self.BACKEND.next_song()
         elif key == "H":
@@ -190,5 +187,6 @@ class vimusApp(App):
 
 
 if __name__ == "__main__":
+    debug_clear()
     app = vimusApp()
     app.run()

@@ -3,6 +3,7 @@ from mpv import MPV
 from file_tree_navigator import FileTreeNavigator
 from file_tree import Song, create_tree_from_music_directory
 from random import randint
+from debug import debug
 
 class Backend:
     def __init__(self):
@@ -27,10 +28,12 @@ class Backend:
 
     def _previous_folder_list(self):
         """Left pane, displays the previous folder"""
-        parent_navigator = copy.copy(self.navigator)
-        parent_navigator.cd_parent()
-
-        parent_list = parent_navigator.get_directories() + [x.display_name for x in parent_navigator.get_songs()]
+        parent_navigator = copy.copy(self.navigator) #create a temporary navigator
+        result = parent_navigator.cd_parent()
+        if not result: #set empty if no higher directory
+            parent_list = []
+        else:
+            parent_list = parent_navigator.get_directories() + [x.display_name for x in parent_navigator.get_songs()]
         self.previous_folder_list = parent_list
 
 
@@ -108,8 +111,8 @@ class Backend:
         Returns true if changed the directory so we need to refresh. 
         """
         result = self.navigator.cd_parent() #change to previous dir
-        if result:
-            self._create_display_lists()
+        if result: #if we were able to move to the previous directory
+            self._create_display_lists() #then update the directories
         return result
 
     #playback 
