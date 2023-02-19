@@ -1,6 +1,6 @@
 from os import listdir
 from os.path import isdir, isfile, splitext
-from song import Song
+from os import getcwd
 
 # python mpv wrapper https://github.com/jaseg/python-mpv
 
@@ -8,6 +8,15 @@ from song import Song
 audio_file_formats = {
     ".aac", ".flac", ".m4a", ".mp3", ".ogg", ".oga", ".mogg", ".opus", ".wav", ".wma", ".webm", ".alac", ".aiff", ".wv"
 }
+
+
+MUSIC_DIRECTORY = getcwd() + "/Music" #the hardcoded music directory for testing and demo
+
+
+class Song:
+    def __init__(self, name, song):
+        self.display_name = name #the name to display to the user 
+        self.song = song #either an absolute path to an audio file or a youtube url
 
 
 class TreeNode:
@@ -40,9 +49,17 @@ class TreeNode:
 
 
 
-class FileTree: #class representing a file tree.
-    def __init__(self, path):
-        self.root: TreeNode = TreeNode(None, path) 
-        self.root.parent = self.root
+#class FileTree: #class representing a file tree.
+#    def __init__(self, path):
+#        self.root: TreeNode = TreeNode(None, path) 
+#        self.root.parent = self.root
 
+
+def create_tree_from_cwd() -> TreeNode: #creates the tree from the current directory
+    #return FileTree(getcwd())
+    return TreeNode(None, getcwd())
+
+def create_tree_from_music_directory() -> TreeNode: #creates the tree from a preconfigured music directory. 
+    #return FileTree(MUSIC_DIRECTORY)
+    return TreeNode(None, MUSIC_DIRECTORY)
 

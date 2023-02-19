@@ -1,14 +1,13 @@
-import file_tree_helpers
 import copy
-from song import Song
 from mpv import MPV
 from file_tree_navigator import FileTreeNavigator
+from file_tree import Song, create_tree_from_music_directory
 from random import randint
 
 class Backend:
     def __init__(self):
         """Utils for navigating the file tree"""
-        self.file_tree = file_tree_helpers.create_tree_from_music_directory()
+        self.file_tree = create_tree_from_music_directory()
         self.navigator = FileTreeNavigator(self.file_tree)
 
         #lists used for display

@@ -1,13 +1,15 @@
 import os
-from file_tree import FileTree, TreeNode
+from file_tree import TreeNode
 
 #current directory, previous directory 
 #
 
 class FileTreeNavigator:
-    def __init__(self, file_tree: FileTree):
-        self.tree: FileTree = file_tree
-        self.root: TreeNode = file_tree.root
+    #def __init__(self, file_tree: FileTree):
+    def __init__(self, file_tree: TreeNode):
+        #self.tree: FileTree = file_tree
+        #self.root: TreeNode = file_tree.root
+        self.root: TreeNode = file_tree
         self.current: TreeNode = self.root #the current node 
     
     def get_current_directory(self): #returns the current directory path
