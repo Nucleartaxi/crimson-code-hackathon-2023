@@ -146,6 +146,9 @@ class vimusApp(App):
         elif key == "enter":
             if self.BACKEND.pressed_index(cur.index, True):
                 self.refresh_panes()
+        elif key == "p":
+            self.BACKEND.play_pause()
+            # self.refresh_panes()
 
     def refresh_panes(self):
         """Refresh all panes in the main pane"""

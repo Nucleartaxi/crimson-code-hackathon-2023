@@ -1,9 +1,8 @@
 import file_tree_helpers
 import copy
-import mpv
-from file_tree_navigator import FileTreeNavigator
 from song import Song
-
+from mpv import MPV
+from file_tree_navigator import FileTreeNavigator
 
 class Backend:
     def __init__(self):
@@ -16,6 +15,9 @@ class Backend:
         self.current_folder_list_display: list[str] = []
         self.current_folder_list: list[str | Song] = []
         self.right_pane_list: list[str] = [] 
+
+        self.mpv: MPV = MPV(ytdl=True, video=False) #create an mpv instance with ytdl enabled and no video (so audio only)
+        self.paused: bool = False
 
         self._create_display_lists() #generate all the display lists on startup
 
@@ -76,8 +78,10 @@ class Backend:
             self._create_display_lists()
             return True #return if this is a directory
         elif isinstance(item, Song): #is song
-            if (play_songs):
-                print("playing song " + item.song)
+            if (play_songs): #if this action should play songs
+                self.mpv.play(item.song)
+                self.current_song = item 
+                self.paused = False
             return False #return if this is a song so we don't want to refresh
         return False
 
@@ -97,6 +101,12 @@ class Backend:
 
     #playback 
     def play_pause(self): #space, p
+        if self.paused:
+            self.mpv.pause = False
+        else:
+            self.mpv.pause = True
+    def play(self, song: Song): #space, p
+
         pass
     def shuffle(self): #s
         pass
