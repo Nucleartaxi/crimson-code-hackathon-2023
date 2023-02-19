@@ -1,14 +1,16 @@
 # Crimson Code Hackathon 2023
 
 ## Prerequisites
-Make sure mpv, mpv-libs, and yt-dlp are installed.
+Make sure mpv and yt-dlp are installed.
 For Arch Linux, run this command:
 ```
-    yay -S mpv mpv-full yt-dlp
+    yay -S mpv yt-dlp
 ```
 For other distros and operating systems, instructions will differ.
 
-Install these Python extensions:
+You also need the following python extensions: textual and python-mpv.
+
+You can install these Python extensions with the following command:
 ```
     python -m pip install textual python-mpv
 ```
