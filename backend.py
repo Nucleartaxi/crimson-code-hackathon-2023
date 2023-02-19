@@ -3,6 +3,7 @@ import copy
 from song import Song
 from mpv import MPV
 from file_tree_navigator import FileTreeNavigator
+from random import randint
 
 class Backend:
     def __init__(self):
@@ -19,6 +20,9 @@ class Backend:
         self.mpv: MPV = MPV(ytdl=True, video=False) #create an mpv instance with ytdl enabled and no video (so audio only)
         self.current_song_list = self.navigator.get_songs()
         self.current_song_index = 0
+        self.playback_mode = "normal" #possible values: normal, shuffle, repeat
+
+        self.playback_song_history = []
 
         self._create_display_lists() #generate all the display lists on startup
 
@@ -74,6 +78,8 @@ class Backend:
             if (play_songs): #if this action should play songs
                 #we only need to update the current song list when a new song is selected.
                 self.current_song_list = self.navigator.get_songs() #update the list of songs in the current directory that we are now playing.
+                self.playback_mode = "normal" #reset back to normal play mode
+                self.playback_song_history = [] #reset history for this new song play
                 self.play_song(item) #item is the song to play
             return False #return if this is a song so we don't want to refresh
         return False
@@ -106,13 +112,27 @@ class Backend:
     def play_pause(self): #space, p
         self.mpv.cycle("pause")
 
-    def shuffle(self): #s
-        pass
+    def set_mode(self, mode: str):
+        """
+        "normal", "shuffle", or "repeat" modes allowed
+        """
+        if mode in ["normal", "shuffle", "repeat"]:
+            self.playback_mode = mode
+        #else don't change it, since invalid input
 
     def next_song(self): #L
-        new_index = self.current_song_index + 1
-        if new_index < len(self.current_song_list) and new_index >= 0:
-            self.play_song(self.current_song_list[new_index])
+        if self.playback_mode == "normal": #get the next index
+            new_index = self.current_song_index + 1
+            if new_index < len(self.current_song_list) and new_index >= 0:
+                self.play_song(self.current_song_list[new_index])
+        elif self.playback_mode == "shuffle": #make a new random index
+            self.playback_song_history.append(self.current_song_list[self.current_song_index]) #record the current song in the history
+            new_index = randint(0, len(self.current_song_list)) #generate a new random index
+            if new_index < len(self.current_song_list) and new_index >= 0:
+                self.play_song(self.current_song_list[new_index])
+        elif self.playback_mode == "repeat": #keep the same index
+            self.play_song(self.current_song_list[self.current_song_index]) 
+
 
     def previous_song(self): #H
         new_index = self.current_song_index - 1

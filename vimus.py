@@ -161,6 +161,11 @@ class vimusApp(App):
             self.BACKEND.seek_forward_alot()
         elif key == "N":
             self.BACKEND.seek_backward_alot()
+        elif key == "s":
+            self.BACKEND.set_mode("shuffle")
+        elif key == "r":
+            self.BACKEND.set_mode("repeat")
+        
 
     def refresh_panes(self):
         """Refresh all panes in the main pane"""
