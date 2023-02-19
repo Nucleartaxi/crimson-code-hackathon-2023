@@ -3,11 +3,7 @@ from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Label, ListItem, ListView, Static, Button
 from textual.containers import Container
 from textual import events
-
-
-
-
-
+from backend import Backend
 
 
 term_height = 0
@@ -54,30 +50,6 @@ class CurPane(ListView):
 
     SEARCHING: bool = False
 
-    #Binding("enter", "select_cursor", "Select", show=False),
-    #Binding("up", "cursor_up", "Cursor Up", show=False),
-    #Binding("down", "cursor_down", "Cursor Down", show=False),
-
-    #def compose(self) -> ComposeResult:
-    #    """Create child widgets."""
-
-    #def __init__(self,
-    #    *children: ListItem,
-    #    initial_index: int | None = 0,
-    #    name: str | None = None,
-    #    id: str | None = None,
-    #    classes: str | None = None,
-    #):
-    #    super(CurPane, self).__init__(
-    #            *children,
-    #            initial_index=initial_index,
-    #            name=name,
-    #            id=id,
-    #            classes=classes
-    #    )
-
-
-
     def on_key(self, event: events.Key) -> None:
         global term_height
         """Called when the user presses a key."""
@@ -104,10 +76,14 @@ class CurPane(ListView):
         elif key == "f":
             self.SEARCHING = True
 
-    def refresh_list(self):
-        self.clear()
-        for elem in self.DISPLAY_LIST:
-            self.append(ListItem(Label(elem)))
+    #def refresh_list(self, backend: Backend):
+    #    self.clear()
+     #   #backend.previous_folder_list
+     #   #backend.current_folder_list
+     #   #backend.right_pane_list
+     #   self.DISPLAY_LIST: list[str] = backend.current_folder_list_display
+     #   for elem in self.DISPLAY_LIST:
+     #       self.append(ListItem(Label(elem)))
 
 
 class RightPane(Static):
@@ -137,6 +113,7 @@ class MainPane(Static):
 class vimusApp(App):
     """Music browser and player."""
 
+    BACKEND = Backend()
     CSS_PATH = "vimus.css"
     BINDINGS = [
         ("q", "quit", "Quit"),
@@ -145,9 +122,6 @@ class vimusApp(App):
 
     def compose(self) -> ComposeResult:
         """Create child widgets for the app."""
-        #yield Header()
-        #yield Stopwatch()
-        #yield Container(Stopwatch(), Stopwatch(), Stopwatch())
         yield MainPane(expand=True, id="main")
         yield Footer()
 
@@ -162,61 +136,7 @@ class vimusApp(App):
         """Gets called when widget is finalized."""
         cur = self.get_widget_by_id("cur")
         self.set_focus(cur)
-        cur.DISPLAY_LIST = [
-            "hi",
-            "himmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "hi",
-            "lo",
-        ]
-
-
-
+        self.refresh_panes()
 
     def on_resize(self):
         global term_height
@@ -236,11 +156,31 @@ class vimusApp(App):
                 file.write(str(e))
         cur = self.get_widget_by_id("cur")
         if key == "h":
-            cur.refresh_list() #refresh
+            if self.BACKEND.previous_directory():
+                self.refresh_panes() #refresh
         elif key == "l":
-            cur.refresh_list()
+            if self.BACKEND.pressed_index(self.get_widget_by_id("cur").index, False):
+                self.refresh_panes()
         elif key == "enter":
-            cur.refresh_list()
+            if self.BACKEND.pressed_index(self.get_widget_by_id("cur").index, True):
+                self.refresh_panes()
+
+    def refresh_panes(self):
+     #   for elem in self.DISPLAY_LIST:
+     #       self.append(ListItem(Label(elem)))
+        prev = self.get_widget_by_id("prev")
+        cur = self.get_widget_by_id("cur")
+        right = self.get_widget_by_id("right")
+        prev.clear()
+        cur.clear()
+        for elem in self.BACKEND.previous_folder_list:
+            prev.append(ListItem(Label(elem)))
+        for elem in self.BACKEND.current_folder_list_display:
+            cur.append(ListItem(Label(elem)))
+        right.update_text("\n".join(item for item in self.BACKEND.right_pane_list))
+
+
+
 
 
 if __name__ == "__main__":

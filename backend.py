@@ -67,6 +67,7 @@ class Backend:
             if (play_songs):
                 print("playing song " + item.song)
             return False #return if this is a song so we don't want to refresh
+        return False
 
         #handle enter folder, etc.
     def previous_directory(self) -> bool: #h
