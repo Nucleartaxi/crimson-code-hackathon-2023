@@ -1,6 +1,6 @@
 # Crimson Code Hackathon 2023 -- vimus
 ## Overview
-A minimalist keyboard-centric TUI music player. Seamlessly supports playing both local files and streaming youtube audio. Use the keyboard to quickly navigate all functions, no mouse required.
+A minimalist keyboard-centric TUI music player created for the 2023 Crimson Code Hackathon. Seamlessly supports playing both local files and streaming youtube audio. Use the keyboard to quickly navigate all functions, no mouse required.
 
 ### Features:
 - Play local music files directly from your filesystem
