@@ -1,6 +1,6 @@
 # Crimson Code Hackathon 2023 -- vimus
 ## Overview
-A TUI vim-inspired keyboard-centric youtube-enabled minimalist music player. Seamlessly supports playing both local files and streaming youtube audio. Use the keyboard to quickly navigate all features, no mouse required.
+A minimalist keyboard-centric TUI music player. Seamlessly supports playing both local files and streaming youtube audio. Use the keyboard to quickly navigate all functions, no mouse required.
 
 ### Features:
 - Play local music files directly from your filesystem
