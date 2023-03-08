@@ -1,4 +1,13 @@
 # Crimson Code Hackathon 2023 -- vimus
+## Overview
+A TUI vim-inspired keyboard-centric youtube-enabled minimalist music player. Seamlessly supports playing both local files and streaming youtube audio. Use the keyboard to quickly navigate all features, no mouse required.
+
+### Features:
+- Play local music files directly from your filesystem
+- Stream audio from any youtube video from a youtube url
+- Supports common music player features including play/pause, next, previous, seeking forward and backward by small and large increments, shuffle mode, and repeat song.
+- Full keyboard control
+- Dark mode/light mode toggle
 
 ## Prerequisites
 Make sure mpv and yt-dlp are installed.
