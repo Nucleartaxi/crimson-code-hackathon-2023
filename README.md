@@ -1,4 +1,13 @@
 # Crimson Code Hackathon 2023 -- vimus
+## Overview
+A minimalist keyboard-centric TUI music player created for the 2023 Crimson Code Hackathon. Seamlessly supports playing both local files and streaming youtube audio. Use the keyboard to quickly navigate all functions, no mouse required.
+
+### Features:
+- Play local music files directly from your filesystem
+- Stream audio from any youtube video from a youtube url
+- Supports common music player features including play/pause, next, previous, seeking forward and backward by small and large increments, shuffle mode, and repeat song.
+- Full keyboard control
+- Dark mode/light mode toggle
 
 ## Prerequisites
 Make sure mpv and yt-dlp are installed.
