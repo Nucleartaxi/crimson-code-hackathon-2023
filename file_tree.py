@@ -1,6 +1,7 @@
 from os import listdir
 from os.path import isdir, isfile, splitext
 from os import getcwd
+from song import Song
 
 # python mpv wrapper https://github.com/jaseg/python-mpv
 
@@ -11,14 +12,9 @@ audio_file_formats = {
 
 
 MUSIC_DIRECTORY = getcwd() + "/Music"
+MUSIC_DIRECTORY = "/home/alexander/Music"
 """Harded music directory for testing and demo"""
 
-
-class Song:
-    """Simple class containing a song and its name"""
-    def __init__(self, name: str, song: str):
-        self.display_name = name #the name to display to the user 
-        self.song = song #either an absolute path to an audio file or a youtube url
 
 
 class TreeNode:
