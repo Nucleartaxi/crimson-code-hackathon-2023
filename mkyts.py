@@ -10,5 +10,6 @@ def get_inputs():
 def make_yts(song: Song):
     with open(song.display_name + ".yts", "w") as f:
         f.write(song.song)
+    print("Wrote url " + song.song + " to file "+ song.display_name + ".yts")
 
 make_yts(get_inputs())
