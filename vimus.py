@@ -1,3 +1,4 @@
+#!/bin/python3
 import os
 from textual import events
 from textual.app import App, ComposeResult
